@@ -1,16 +1,11 @@
-class ProApeDependencySubstitutionPlugin implements Plugin<Project> {
-    @Override
-    void apply(Project target) {
-        target.configurations.all {
-            resolutionStrategy.dependencySubstitution.all { DependencySubstitution dependency ->
-                if (dependency.requested instanceof ModuleComponentSelector && dependency.requested.group == "de.proape.project.android") {
-                    def targetModule = ":${dependency.requested.module}"
-                    target.evaluationDependsOn(targetModule)
-                    def targetProject = target.findProject(targetModule)
-                    if (targetProject != null) {
-                        dependency.useTarget targetProject
-                    }
-                }
+configurations.all {
+    resolutionStrategy.dependencySubstitution.all { DependencySubstitution dependency ->
+        if (dependency.requested instanceof ModuleComponentSelector && dependency.requested.group == "de.proape.project.android") {
+            def targetModule = ":${dependency.requested.module}"
+            evaluationDependsOn(targetModule)
+            def targetProject = findProject(targetModule)
+            if (targetProject != null) {
+                dependency.useTarget targetProject
             }
         }
     }
