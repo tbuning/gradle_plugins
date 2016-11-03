@@ -9,8 +9,6 @@ configurations {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-
     deployLibrary "ar.com.synergian:wagon-git:0.2.0"
 }
 
@@ -34,34 +32,11 @@ artifacts {
     archives androidJavadocsJar
 }
 
-task lookForArtifacts {
-    doLast {
-        def artifactName = ARTIFACT_NAME + '-' + ARTIFACT_VERSION + '.aar'
-        def artifactPath = ARTIFACT_PACKAGE.replace(".", "/") + "/" + ARTIFACT_NAME + "/" + ARTIFACT_VERSION + "/" + artifactName
-        def repositoryUrl = 'https://api.bitbucket.org/1.0/repositories/' + COMPANY + '/' + REPOSITORY_NAME + '/raw/releases/' + artifactPath
-
-        println("")
-        println("Checking if artifact already exists: " + artifactName)
-        println("at URL: " + repositoryUrl)
-
-        def artifactExists = urlExists(repositoryUrl)
-        println(artifactExists ? "existing artifact found" : "no existing artifact found")
-        println("")
-
-        if (urlExists(repositoryUrl)) {
-            throw new RuntimeException("Artifact with version " + ARTIFACT_VERSION + " already exist - not executing uploadArchives")
-        }
-        return true
-    }
-}
-
-uploadArchives.dependsOn lookForArtifacts
-
 uploadArchives {
 
     repositories.mavenDeployer {
         configuration = configurations.deployLibrary
-        repository(url: 'git:releases://git@bitbucket.org:' + COMPANY + '/' + REPOSITORY_NAME + '.git')
+        repository(url: 'https://git.d-velop.de/proape-smingo-android/Specs.git')
 
         uniqueVersion = true
 
