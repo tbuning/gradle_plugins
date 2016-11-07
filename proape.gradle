@@ -13,6 +13,7 @@ configurations.all {
     }
 }
 
+
 def getLibraryName(dependency, isLocal = false) {
 
     if(isLocal) {
