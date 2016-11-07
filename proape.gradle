@@ -1,11 +1,13 @@
 configurations.all {
     resolutionStrategy.dependencySubstitution.all { DependencySubstitution dependency ->
         if (dependency.requested instanceof ModuleComponentSelector && dependency.requested.group == "de.proape.project.android") {    
-            def targetProject = findProject(targetModule)
-            if (targetProject != null) {
+            if(dependency.requested.group.contains("Local") {
                 def targetModule = ":${dependency.requested.module}"
                 evaluationDependsOn(targetModule)
-                dependency.useTarget targetProject
+                def targetProject = findProject(targetModule)
+                if (targetProject != null) {
+                    dependency.useTarget targetProject
+                }
             }
         }
     }
