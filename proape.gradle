@@ -1,7 +1,7 @@
 configurations.all {
     resolutionStrategy.dependencySubstitution.all { DependencySubstitution dependency ->
         if (dependency.requested instanceof ModuleComponentSelector && dependency.requested.group == "de.proape.project.android") {    
-            if(dependency.requested.group.contains("Local") {
+            if(dependency.requested.version.contains("Local") {
                 def targetModule = ":${dependency.requested.module}"
                 evaluationDependsOn(targetModule)
                 def targetProject = findProject(targetModule)
@@ -10,5 +10,16 @@ configurations.all {
                 }
             }
         }
+    }
+}
+
+def getLibraryName(dependency, isLocal = false) {
+
+    if(isLocal) {
+        
+        return dependency + "-Local"
+    } else {
+    
+        return dependency
     }
 }
