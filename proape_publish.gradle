@@ -29,8 +29,6 @@ artifactory {
     publish {
         repository {
             repoKey = 'libs-release-local'
-            username = "admin"
-            password = "password"
             maven = true
         }
         defaults {
@@ -47,8 +45,6 @@ artifactory {
     resolve {
         repository {
             repoKey = 'libs-release'
-            username = "admin"
-            password = "password"
             maven = true
 
         }
