@@ -25,7 +25,7 @@ publishing {
 }
 
 artifactory {
-    contextUrl = "http://$ARTIFACTORY_URL/artifactory"   //The base Artifactory URL if not overridden by the publisher/resolver
+    contextUrl = ARTIFACTORY_URL   //The base Artifactory URL if not overridden by the publisher/resolver
     publish {
         repository {
             repoKey = 'libs-release-local'
