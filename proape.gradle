@@ -12,15 +12,3 @@ configurations.all {
         }
     }
 }
-
-
-def getLibraryName(dependency, isLocal = false) {
-
-    if(isLocal) {
-        
-        return dependency + "-Local"
-    } else {
-    
-        return dependency
-    }
-}
