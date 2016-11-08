@@ -1,18 +1,15 @@
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
-dependencies {
-    deployerJars "org.apache.maven.wagon:wagon-http:2.2"
-}
+publishing {
+    publications {
+        aar(MavenPublication) {
+            groupId ARTIFACT_PACKAGE
+            version = ARTIFACT_VERSION
+            artifactId ARTIFACT_NAME
 
-uploadArchives {
-    repositories.mavenDeployer {
-        configuration = configurations.deployerJars
-        repository(url: "https://my.example.com/content/repositories/com.example/") {
-            authentication(userName: NEXUS_USER, password: NEXUS_PASSWORD)
-            pom.groupId = ARTIFACT_PACKAGE
-            pom.artifactId = ARTIFACT_NAME
-            pom.version = ARTIFACT_VERSION
-            
+            // Tell maven to prepare the generated "*.aar" file for publishing
+            artifact("$buildDir/outputs/aar/${project.name}-release.aar")
+
             pom.withXml {
                 def dependencies = asNode().appendNode('dependencies')
                 configurations.getByName("_releaseCompile").getResolvedConfiguration().getFirstLevelModuleDependencies().each {
@@ -21,6 +18,27 @@ uploadArchives {
                     dependency.appendNode('artifactId', it.moduleName)
                     dependency.appendNode('version', it.moduleVersion)
                 }
+            }
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name 'Release'
+            url "$NEXUS_URL/proape-releases"
+            credentials {
+                username "$NEXUS_USER"
+                password "$NEXUS_PASSWORD"
+            }
+        }
+        maven {
+            name 'Snapshots'
+            url "$NEXUS_URL/proape-snapshots"
+            credentials {
+                username "$NEXUS_USER"
+                password "$NEXUS_PASSWORD"
             }
         }
     }
