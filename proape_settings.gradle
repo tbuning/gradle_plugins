@@ -1,0 +1,6 @@
+modules.each { name ->
+    if (new File("$rootDir/$name/SMINGO_$name/app").exists()) {
+        include name
+        project(":$name").projectDir = new File("$rootDir/$name/SMINGO_$name/app")
+    }
+}
